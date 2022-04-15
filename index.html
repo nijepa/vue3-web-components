@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+
+  <body>
+
+    <button onclick="showToast()">toast</button>
+    <div id="app">
+      <h1>Hello Vue Web Components!</h1>
+      
+      <current-time></current-time>
+      <current-time time-zone="America/New_York"></current-time>
+      <current-time>
+        <span slot="prefix">The time is</span>
+      </current-time>
+      <custom-object user></custom-object>
+      <custom-toast is-active toast-data></custom-toast>
+      
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      const user = { "name": "Djuro", "age": 50 }
+      const el = document.querySelector('custom-object')
+      el.setAttribute('user', JSON.stringify(user))
+      const toast = document.querySelector('custom-toast')
+      const td = {title: 'Zuraaa', msg: 'ihaaaaa', type: 'info'}
+      toast.setAttribute('toast-data', JSON.stringify(td))
+      function showToast() {
+        toast.setAttribute("is-active", "true")
+      }
+      window.addEventListener("closed", closed)
+      function closed() {
+        toast.setAttribute("is-active", "false")
+      }
+    </script>
+  </body>
+</html>
+
