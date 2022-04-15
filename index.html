@@ -19,7 +19,9 @@
         <span slot="prefix">The time is</span>
       </current-time>
       <custom-object user></custom-object>
-      <custom-toast is-active toast-data></custom-toast>
+      <custom-toast is-active toast-data toast-style>
+        <span slot="additionalInfo">additional info</span>
+      </custom-toast>
       
     </div>
     <script type="module" src="/main.js"></script>
@@ -28,8 +30,10 @@
       const el = document.querySelector('custom-object')
       el.setAttribute('user', JSON.stringify(user))
       const toast = document.querySelector('custom-toast')
-      const td = {title: 'Zuraaa', msg: 'ihaaaaa', type: 'info'}
+      const td = {title: 'Zuraaa', msg: 'ihaaaaa njihaaa', type: 'info'}
       toast.setAttribute('toast-data', JSON.stringify(td))
+      const ts = {position: 'right-bottom'}
+      //toast.setAttribute('toast-style', JSON.stringify(ts))
       function showToast() {
         toast.setAttribute("is-active", "true")
       }

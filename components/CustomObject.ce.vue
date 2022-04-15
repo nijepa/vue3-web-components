@@ -1,6 +1,7 @@
 <template>
   <p>{{ userData.name }}</p>
   <p>{{ userData.age }}</p>
+  <slot name="prefix" />
 </template>
 
 <script setup>
