@@ -5,43 +5,42 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Updock&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-
     <button onclick="showToast()">toast</button>
     <div id="app">
-      <h1>Hello Vue Web Components!</h1>
-      
-      <current-time></current-time>
-      <current-time time-zone="America/New_York"></current-time>
-      <current-time>
-        <span slot="prefix">The time is</span>
-      </current-time>
-      <custom-object user></custom-object>
+      <h1>Vue Web Components!</h1>
+
       <custom-toast is-active toast-data toast-style>
-        <span slot="additionalInfo">additional info</span>
+        <span slot="additionalData">additional info</span>
       </custom-toast>
-      
+
     </div>
     <script type="module" src="/main.js"></script>
     <script>
-      const user = { "name": "Djuro", "age": 50 }
-      const el = document.querySelector('custom-object')
-      el.setAttribute('user', JSON.stringify(user))
-      const toast = document.querySelector('custom-toast')
-      const td = {title: 'Zuraaa', msg: 'ihaaaaa njihaaa', type: 'info'}
-      toast.setAttribute('toast-data', JSON.stringify(td))
-      const ts = {position: 'right-bottom'}
-      //toast.setAttribute('toast-style', JSON.stringify(ts))
+      const toast = document.querySelector("custom-toast");
+      const td = { title: "Zuraaa", message: "ihaaaaa njihaaa", type: "info" };
+      toast.setAttribute("toast-data", JSON.stringify(td));
+      const ts = { position: "center", decoration: true, colorized: false };
+      toast.setAttribute("toast-style", JSON.stringify(ts));
       function showToast() {
-        toast.setAttribute("is-active", "true")
+        toast.setAttribute("is-active", "true");
       }
-      window.addEventListener("closed", closed)
-      function closed() {
-        toast.setAttribute("is-active", "false")
+      window.addEventListener("close-toast", toastClosed);
+      function toastClosed() {
+        toast.setAttribute("is-active", "false");
       }
     </script>
   </body>
 </html>
-

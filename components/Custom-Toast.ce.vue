@@ -1,17 +1,20 @@
 <template>
   <div ref="elem">
     <div
-      class="account-toast__open"
-      :class="[active === 'false' ? 'h-hide' : '', applyStyle.backdrop ? 'backdrop' : '']"
+      class="toast__open"
+      :class="[
+        active === 'false' ? 'h-hide' : '',
+        applyStyle.backdrop ? 'backdrop' : '',
+      ]"
       @click="hideToast"
     ></div>
     <transition name="wobble" mode="in-out">
       <div
-        id="account-toast"
-        class="account-toast"
-        :class="[active === 'false' ? 'h-hide' : '', applyStyle.position]"
+        id="toast"
+        class="toast"
+        :class="[active === 'false' ? 'h-hide' : '', applyStyle.position, applyStyle.colorized ? 'colorized' : '']"
       >
-        <div class="account-toast__title" :class="msgType">
+        <div class="toast__title" :class="msgType">
           <span id="toast-title">
             <svg
               v-if="msgType === 'success'"
@@ -63,7 +66,7 @@
             </svg>
             {{ showData.title }}
           </span>
-          <span class="account-toast__close" @click="hideToast">
+          <span class="toast__close" @click="hideToast">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -120,9 +123,9 @@
               />
             </svg>
           </span>
-          <div id="toast-msg">{{ showData.msg }}</div>
+          <div id="toast-msg" v-html="showData.message"></div>
         </div>
-        <slot name="additionalInfo" />
+        <slot name="additionalData" />
       </div>
     </transition>
   </div>
@@ -138,22 +141,39 @@ const props = defineProps({
   },
   toastData: {
     type: String,
-    default: { title: "title", msg: "msg", type: "success" },
+    default: { title: "title", message: "msg", type: "success" },
   },
   toastStyle: {
     type: String,
-    default: { position: "center" },
+    default: {
+      position: "center",
+      decoration: true,
+      colorized: false,
+      backdrop: false,
+      color: "#ffb700",
+      font: "'Open Sans', sans-serif",
+    },
   },
 });
 
 const defaultData = {
   title: "set custom title",
-  msg: "set component attribute toastData as JSON object \n with following properties: title, msg, type",
+  message: `<p>* Set component attribute <b>toast-data</b> as JSON object</p>
+            <p>with following properties: <i>title, message, type</i></p>
+            <li>example: </li>
+            <p><b><i>const td = { title: 'some title', message: 'message, html can be used', type: 'info/error/success' }</i></b></p>
+            <p><b><i>document.querySelector('custom-toast').setAttribute('toast-data', JSON.stringify(td))</i></b></p>
+            <br />
+            <p>* Styles can be set by setting attribute <b>toast-style</b></p>
+            <li>example:</li>
+            <p><b><i>const ts = { position: 'right-bottom/center/left-top...', decoration: true/false, backdrop: true/false, color: "hex/rgb", font: "'Open Sans', sans-serif" }</i></b></p>
+            <p><b><i>document.querySelector('custom-toast').setAttribute('toast-style', JSON.stringify(ts))</i></b></p>`,
   type: "info",
 };
 const showData = computed(() => {
   return props.toastData ? JSON.parse(props.toastData) : defaultData;
 });
+let typeColor = ref(null)
 const msgType = computed(() => {
   if (props.toastData) {
     let msgType = "";
@@ -167,13 +187,35 @@ const msgType = computed(() => {
       default:
         msgType = "success";
     }
+    setColorize()
     return msgType;
   } else {
     return defaultData.type;
   }
 });
+const setColorize = () => {
+  if (JSON.parse(props.toastStyle)?.colorized) {
+    switch (JSON.parse(props.toastData).type) {
+      case "error":
+        typeColor = "#c31b19"
+        break;
+      case "info":
+        typeColor = "#0d2bed"
+        break;
+      default:
+        typeColor = "#6eb531"
+    }
+  }
+}
 
-const defaultStyle = { position: "center", decoration: true, backdrop: false };
+const defaultStyle = {
+  position: "center",
+  decoration: true,
+  colorized: false,
+  backdrop: false,
+  color: "#ffb700",
+  font: "'Open Sans', sans-serif",
+};
 const applyStyle = computed(() => {
   return props.toastStyle ? JSON.parse(props.toastStyle) : defaultStyle;
 });
@@ -181,30 +223,38 @@ const applyStyle = computed(() => {
 const active = ref("false");
 watch(
   () => props.isActive,
-  (first, second) => {
+  (newValue, oldValue) => {
     console.log(
       "Watch props.selected function called with args:",
-      first,
-      second
+      newValue,
+      oldValue
     );
-    active.value = first;
+    active.value = newValue;
   }
 );
 
-const emit = defineEmits(["closed"]);
+const emit = defineEmits(["close-toast"]);
 const elem = ref(null);
 const hideToast = () => {
   active.value = "false";
   elem.value.dispatchEvent(
-    new CustomEvent("closed", {
+    new CustomEvent("close-toast", {
       bubbles: true,
       composed: true,
     })
   );
 };
 </script>
-<style scoped>
-.account-toast {
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.toast {
   max-width: 500px;
   min-width: 150px;
   position: fixed;
@@ -219,26 +269,31 @@ const hideToast = () => {
   row-gap: 1em;
   padding: 1em;
   z-index: 999;
+  font-family: v-bind(defaultStyle.font);
 }
-.account-toast__title {
+.toast__title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
   font-weight: 600;
+  margin: -1rem;
+  padding: .5rem;
+  border-bottom: 2px solid v-bind(typeColor);
 }
 #toast-title {
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
 }
-.account-toast__close {
+.toast__close {
   cursor: pointer;
 }
-.account-toast__close:hover {
-  color: yellow;
+.toast__close:hover svg {
+  /* fill: v-bind(typeColor) !important; */
+  filter: brightness(.55);
 }
-.account-toast {
+.toast {
   display: block;
   padding: 1em;
   transition: 0.5s all ease;
@@ -247,15 +302,15 @@ const hideToast = () => {
   height: auto;
   /* animation: "wobbles" 0.5s ease-in;  */
 }
-.account-toast.h-hide {
+.toast.h-hide {
   padding: 0.5em;
   opacity: 0;
   height: 0.5em;
 }
-.account-toast__open.h-hide {
+.toast__open.h-hide {
   display: none;
 }
-.account-toast__open::after {
+.toast__open::after {
   position: absolute;
   top: 0;
   left: 0;
@@ -274,19 +329,20 @@ const hideToast = () => {
 .toast__content {
   display: flex;
   align-items: center;
-  column-gap: .5em;
+  column-gap: 0.5em;
   text-align: left;
+  padding-top: 2rem;
 }
 .error span {
-  color: rgb(195, 27, 25);
+  color: #c31b19;
   /* box-shadow: 5px 5px 12px rgba(250, 22, 22, 0.822); */
 }
 .success span {
-  color: rgb(110, 181, 49);
+  color: #6eb531;
 }
 
 .info span {
-  color: rgb(13, 43, 237);
+  color: #0d2bed;
 }
 
 .center {
@@ -297,18 +353,39 @@ const hideToast = () => {
 .left-top {
   top: 0;
   left: 0;
+  margin-top: 1em;
+  margin-left: 1em;
 }
 .right-top {
   top: 0;
   right: 0;
+  margin-top: 1em;
+  margin-right: 1em;
 }
 .left-bottom {
   bottom: 0;
   left: 0;
+  margin-left: 1em;
+  margin-bottom: 1em;
 }
 .right-bottom {
   bottom: 0;
   right: 0;
+  margin-right: 1em;
+  margin-bottom: 1rem;
+}
+.colorized {
+  border: 2px solid v-bind(typeColor);
+}
+.colorized .toast__title {
+  background-color: v-bind(typeColor);
+}
+.colorized .toast__title span {
+  background-color: v-bind(typeColor);
+  color: white;
+}
+.colorized .toast__title svg {
+  fill: white;
 }
 .wobble-enter-active {
   animation: wobbles 1s ease;
