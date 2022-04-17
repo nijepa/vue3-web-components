@@ -23,7 +23,12 @@
       <h1>Vue Web Components!</h1>
 
       <custom-toast is-active toast-data toast-style>
-        <span slot="additionalData">additional info</span>
+        <span slot="additionalData">
+          <div>
+            <h3>additional info</h3>
+            <p>tandar mandara broc</p>
+          </div>
+        </span>
       </custom-toast>
 
     </div>
@@ -31,9 +36,9 @@
     <script>
       const toast = document.querySelector("custom-toast");
       const td = { title: "Zuraaa", message: "ihaaaaa njihaaa", type: "info" };
-      toast.setAttribute("toast-data", JSON.stringify(td));
-      const ts = { position: "center", decoration: true, colorized: false };
-      toast.setAttribute("toast-style", JSON.stringify(ts));
+      //toast.setAttribute("toast-data", JSON.stringify(td));
+      const ts = { position: "center", decoration: true, colorized: true, backdrop: true };
+      //toast.setAttribute("toast-style", JSON.stringify(ts));
       function showToast() {
         toast.setAttribute("is-active", "true");
       }

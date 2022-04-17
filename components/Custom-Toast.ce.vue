@@ -159,14 +159,32 @@ const props = defineProps({
 const defaultData = {
   title: "set custom title",
   message: `<p>* Set component attribute <b>toast-data</b> as JSON object</p>
-            <p>with following properties: <i>title, message, type</i></p>
+            <div>
+            <p>with following properties: </p>
+            <ul>
+            <li><i>title</i> <span>(String)</span></li>
+            <li><i>message</i> <span>(String - can be used html)</span></li>
+            <li><i>type</i> <span>(String - info, success, error)</span></li>
+            </ul>
+            </div>
             <li>example: </li>
-            <p><b><i>const td = { title: 'some title', message: 'message, html can be used', type: 'info/error/success' }</i></b></p>
+            <p><b><i>const td = { title: 'some title', message: 'message', type: 'info' }</i></b></p>
             <p><b><i>document.querySelector('custom-toast').setAttribute('toast-data', JSON.stringify(td))</i></b></p>
             <br />
             <p>* Styles can be set by setting attribute <b>toast-style</b></p>
+            <div>
+            <p>with following properties:</p>
+            <ul>
+            <li><i>position</i> <span>(String - center, left-top, right-top, left-bottom, right-bottom)</span></li>
+            <li><i>decoration</i> <span>(Boolean)</span></li>
+            <li><i>backdrop</i> <span>(Boolean)</span></li>
+            <li><i>colorized</i> <span>(Boolean)</span></li>
+            <li><i>color</i> <span>(String - any color)</span></li>
+            <li><i>font</i> <span>(String - any font-family)</span></li>
+            </ul>
+            </div>
             <li>example:</li>
-            <p><b><i>const ts = { position: 'right-bottom/center/left-top...', decoration: true/false, backdrop: true/false, color: "hex/rgb", font: "'Open Sans', sans-serif" }</i></b></p>
+            <p><b><i>const ts = { position: 'center', decoration: false, backdrop: false, color: "#ffffff", font: "'Open Sans', sans-serif" }</i></b></p>
             <p><b><i>document.querySelector('custom-toast').setAttribute('toast-style', JSON.stringify(ts))</i></b></p>`,
   type: "info",
 };
@@ -183,6 +201,7 @@ const msgType = computed(() => {
         break;
       case "info":
         msgType = "info";
+        typeColor = "#0d2bed"
         break;
       default:
         msgType = "success";
@@ -305,10 +324,11 @@ const hideToast = () => {
 .toast.h-hide {
   padding: 0.5em;
   opacity: 0;
-  height: 0.5em;
+  height: 3.5em;
 }
 .toast__open.h-hide {
   display: none;
+  opacity: 0;
 }
 .toast__open::after {
   position: absolute;
@@ -320,7 +340,7 @@ const hideToast = () => {
   background: transparent;
   content: "";
   z-index: 9;
-  /*transition: 0.5s all linear;*/
+  transition: opacity 1s ease;
   opacity: 1;
 }
 .backdrop::after {
@@ -379,6 +399,7 @@ const hideToast = () => {
 }
 .colorized .toast__title {
   background-color: v-bind(typeColor);
+  border: 2px solid v-bind(typeColor);
 }
 .colorized .toast__title span {
   background-color: v-bind(typeColor);
