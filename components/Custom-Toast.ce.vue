@@ -8,7 +8,7 @@
       ]"
       @click="hideToast"
     ></div>
-    <transition name="wobble" mode="in-out">
+    <transition name="wobble" appear>
       <div
         id="toast"
         class="toast"
@@ -198,6 +198,7 @@ const msgType = computed(() => {
     switch (JSON.parse(props.toastData).type) {
       case "error":
         msgType = "error";
+        typeColor = "#c31b19"
         break;
       case "info":
         msgType = "info";
@@ -205,27 +206,14 @@ const msgType = computed(() => {
         break;
       default:
         msgType = "success";
+        typeColor = "#6eb531";
     }
-    setColorize()
     return msgType;
   } else {
+    typeColor = "#0d2bed"
     return defaultData.type;
   }
 });
-const setColorize = () => {
-  if (JSON.parse(props.toastStyle)?.colorized) {
-    switch (JSON.parse(props.toastData).type) {
-      case "error":
-        typeColor = "#c31b19"
-        break;
-      case "info":
-        typeColor = "#0d2bed"
-        break;
-      default:
-        typeColor = "#6eb531"
-    }
-  }
-}
 
 const defaultStyle = {
   position: "center",
@@ -243,11 +231,11 @@ const active = ref("false");
 watch(
   () => props.isActive,
   (newValue, oldValue) => {
-    console.log(
-      "Watch props.selected function called with args:",
-      newValue,
-      oldValue
-    );
+    // console.log(
+    //   "Watch props.selected function called with args:",
+    //   newValue,
+    //   oldValue
+    // );
     active.value = newValue;
   }
 );
@@ -277,9 +265,6 @@ const hideToast = () => {
   max-width: 500px;
   min-width: 150px;
   position: fixed;
-  /* top: 40%;
-  left: 40%;
-  transform: translate(-50%, -50%); */
   background-color: white;
   border-radius: 0.5em;
   box-shadow: 5px 5px 12px rgb(0 0 0 / 15%);
@@ -304,13 +289,15 @@ const hideToast = () => {
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
+  color: v-bind(typeColor);
 }
 .toast__close {
+  color: v-bind(typeColor);
   cursor: pointer;
 }
 .toast__close:hover svg {
-  /* fill: v-bind(typeColor) !important; */
-  filter: brightness(.55);
+  /* fill: v-bind(typeColor) !important;  */
+  filter: brightness(1.55);
 }
 .toast {
   display: block;
@@ -319,12 +306,13 @@ const hideToast = () => {
   opacity: 1;
   overflow: hidden;
   height: auto;
-  /* animation: "wobbles" 0.5s ease-in;  */
+  /* animation: "wobbles" 1s ease;  */
 }
 .toast.h-hide {
   padding: 0.5em;
   opacity: 0;
   height: 3.5em;
+  z-index: -1;
 }
 .toast__open.h-hide {
   display: none;
@@ -353,18 +341,6 @@ const hideToast = () => {
   text-align: left;
   padding-top: 2rem;
 }
-.error span {
-  color: #c31b19;
-  /* box-shadow: 5px 5px 12px rgba(250, 22, 22, 0.822); */
-}
-.success span {
-  color: #6eb531;
-}
-
-.info span {
-  color: #0d2bed;
-}
-
 .center {
   top: 50%;
   left: 50%;
@@ -403,19 +379,17 @@ const hideToast = () => {
 }
 .colorized .toast__title span {
   background-color: v-bind(typeColor);
-  color: white;
+  color: white !important;
 }
 .colorized .toast__title svg {
   fill: white;
 }
 .wobble-enter-active {
-  animation: wobbles 1s ease;
+  animation: wobbles 1s linear;
 }
-
 .wobble-leave-active {
   animation: wobbles 1s ease;
 }
-
 @keyframes wobbles {
   0% {
     transform: translateY(20px);

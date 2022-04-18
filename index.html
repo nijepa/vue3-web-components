@@ -35,11 +35,11 @@
     <script type="module" src="/main.js"></script>
     <script>
       const toast = document.querySelector("custom-toast");
-      const td = { title: "Zuraaa", message: "ihaaaaa njihaaa", type: "info" };
+      const td = { title: "Zuraaa", message: "ihaaaaa njihaaa", type: "error" };
       //toast.setAttribute("toast-data", JSON.stringify(td));
-      const ts = { position: "center", decoration: true, colorized: true, backdrop: true };
+      const ts = { position: "center", decoration: false, colorized: true, backdrop: false };
       //toast.setAttribute("toast-style", JSON.stringify(ts));
-      function showToast() {
+      const showToast = () => {
         toast.setAttribute("is-active", "true");
       }
       window.addEventListener("close-toast", toastClosed);
