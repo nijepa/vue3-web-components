@@ -1,6 +1,15 @@
 {
-  "name": "vite-project",
-  "version": "0.0.0",
+  "name": "Toast web component",
+  "version": "0.0.6",
+  "author": "Nikola Pavicevic <nijepa@gmail.com>",
+  "description": "Vue3 web-component toast with Vite",
+  "keywords": [
+    "Vue3",
+    "web-component",
+    "vite"
+  ],
+  "repository": "github:https://github.com/nijepa/vue3-web-components",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
