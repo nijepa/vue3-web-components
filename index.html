@@ -37,16 +37,16 @@
       const td = {
         title: 'Error',
         message: '<h3>message title</h3><p>message text</p>',
-        type: 'error',
+        type: 'success',
       };
       toast.setAttribute("toast-data", JSON.stringify(td));
       const ts = {
-        position: 'left-top',
+        position: 'center',
         decoration: true,
-        colorized: true,
-        backdrop: true,
+        colorized: false,
+        backdrop: false,
       };
-      //toast.setAttribute("toast-style", JSON.stringify(ts));
+      toast.setAttribute("toast-style", JSON.stringify(ts));
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };

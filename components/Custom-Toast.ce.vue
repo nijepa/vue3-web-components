@@ -1,12 +1,11 @@
 <template>
-  <div ref="elem" :class="[applyStyle.position, { 'infront': active }]" id="elem">
+  <div ref="toastWrapper" :class="[applyStyle.position, { 'infront': active }]" id="toast-wrapper">
     <div
       class="toast__open"
       :class="[{ 'h-hide': !active }, { 'backdrop': applyStyle.backdrop }]"
       @click="hideToast"
     ></div>
-    <!-- <transition name="wobble" appear mode="out-in" v-if="isActive == 'true'"></transition> -->
-    <transition name="wobble" appear mode="out-in" v-show="active">
+    <transition name="wobble" appear v-show="active">
       <div
         id="toast"
         class="toast"
@@ -229,20 +228,16 @@ const active = ref(false);
 watch(
   () => props.isActive,
   (newValue, oldValue) => {
-    // console.log(
-    //   "Watch props.selected function called with args:",
-    //   newValue,
-    //   oldValue
-    // );
+    // console.log("Watch props.selected function called with args:", newValue, oldValue);
     active.value = newValue === 'true';
   }
 );
 
 const emit = defineEmits(['close-toast']);
-const elem = ref(null);
+const toastWrapper = ref(null);
 const hideToast = () => {
   active.value = false;
-  elem.value.dispatchEvent(
+  toastWrapper.value.dispatchEvent(
     new CustomEvent('close-toast', {
       bubbles: true,
       composed: true,
@@ -251,15 +246,11 @@ const hideToast = () => {
 };
 </script>
 <style>
-#app {
+#toast-wrapper {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-}
-#elem {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -272,6 +263,26 @@ const hideToast = () => {
 .infront {
   z-index: 9 !important;
 }
+.toast__open::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background: rgba(0, 0, 0, 0.5); */
+  background: transparent;
+  content: '';
+  /* z-index: 9; */
+  transition: all 5s;
+  opacity: 1;
+}
+.backdrop::after {
+  background: rgba(0, 0, 0, 0.5);
+}
+.toast__open.h-hide {
+  display: none;
+  opacity: 0;
+}
 .toast {
   max-width: 500px;
   min-width: 150px;
@@ -281,10 +292,23 @@ const hideToast = () => {
   box-shadow: 5px 5px 12px rgb(0 0 0 / 15%);
   display: flex;
   flex-direction: column;
-  row-gap: 1em;
+  /* row-gap: 1em; */
   padding: 1em;
   z-index: 999;
   font-family: v-bind(defaultStyle.font);
+  /* display: block; */
+  /* padding: 1em; */
+  transition: 0.5s all ease;
+  opacity: 1;
+  overflow: hidden;
+  height: auto;
+  margin: 1em;
+}
+.toast.h-hide {
+  padding: 0.5em;
+  opacity: 0;
+  height: 3.5em;
+  z-index: -1;
 }
 .toast__title {
   display: flex;
@@ -305,52 +329,18 @@ const hideToast = () => {
 .toast__close {
   color: v-bind(typeColor);
   cursor: pointer;
+  transition: all 1.4s ease;
 }
 .toast__close:hover svg {
   /* fill: v-bind(typeColor) !important;  */
-  filter: brightness(1.55);
-}
-.toast {
-  display: block;
-  padding: 1em;
-  transition: 0.5s all ease;
-  opacity: 1;
-  overflow: hidden;
-  height: auto;
-  margin: 1em;
-}
-.toast.h-hide {
-  padding: 0.5em;
-  opacity: 0;
-  height: 3.5em;
-  z-index: -1;
-}
-.toast__open.h-hide {
-  display: none;
-  opacity: 0;
-}
-.toast__open::after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* background: rgba(0, 0, 0, 0.5); */
-  background: transparent;
-  content: '';
-  z-index: 9;
-  transition: all 5s;
-  opacity: 1;
-}
-.backdrop::after {
-  background: rgba(0, 0, 0, 0.5);
+  filter: brightness(0.55);
 }
 .toast__content {
   display: flex;
   align-items: center;
   column-gap: 0.5em;
   text-align: left;
-  padding-top: 2rem;
+  padding-top: 1em;
 }
 .center {
   justify-content: center;
@@ -390,6 +380,7 @@ const hideToast = () => {
   animation: wobbles 0.8s ease;
 }
 .wobble-leave-active {
+  transition: all 1s ease;
   /* animation: wobbles 1s linear; */
 }
 @keyframes wobbles {
