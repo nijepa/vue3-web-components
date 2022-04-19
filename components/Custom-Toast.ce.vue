@@ -1,18 +1,16 @@
 <template>
-  <div ref="elem">
+  <div ref="elem" :class="[applyStyle.position, { 'infront': active }]" id="elem">
     <div
       class="toast__open"
-      :class="[
-        active === 'false' ? 'h-hide' : '',
-        applyStyle.backdrop ? 'backdrop' : '',
-      ]"
+      :class="[{ 'h-hide': !active }, { 'backdrop': applyStyle.backdrop }]"
       @click="hideToast"
     ></div>
-    <transition name="wobble" appear>
+    <!-- <transition name="wobble" appear mode="out-in" v-if="isActive == 'true'"></transition> -->
+    <transition name="wobble" appear mode="out-in" v-show="active">
       <div
         id="toast"
         class="toast"
-        :class="[active === 'false' ? 'h-hide' : '', applyStyle.position, applyStyle.colorized ? 'colorized' : '']"
+        :class="[{ 'h-hide': !active }, { 'colorized': applyStyle.colorized }]"
       >
         <div class="toast__title" :class="msgType">
           <span id="toast-title">
@@ -132,32 +130,32 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
 
 const props = defineProps({
   isActive: {
     type: String,
-    default: "false",
+    default: 'false',
   },
   toastData: {
     type: String,
-    default: { title: "title", message: "msg", type: "success" },
+    default: { title: 'title', message: 'msg', type: 'success' },
   },
   toastStyle: {
     type: String,
     default: {
-      position: "center",
+      position: 'center',
       decoration: true,
       colorized: false,
       backdrop: false,
-      color: "#ffb700",
+      color: '#ffb700',
       font: "'Open Sans', sans-serif",
     },
   },
 });
 
 const defaultData = {
-  title: "set custom title",
+  title: 'set custom title',
   message: `<p>* Set component attribute <b>toast-data</b> as JSON object</p>
             <div>
             <p>with following properties: </p>
@@ -186,48 +184,48 @@ const defaultData = {
             <li>example:</li>
             <p><b><i>const ts = { position: 'center', decoration: false, backdrop: false, color: "#ffffff", font: "'Open Sans', sans-serif" }</i></b></p>
             <p><b><i>document.querySelector('custom-toast').setAttribute('toast-style', JSON.stringify(ts))</i></b></p>`,
-  type: "info",
+  type: 'info',
 };
 const showData = computed(() => {
   return props.toastData ? JSON.parse(props.toastData) : defaultData;
 });
-let typeColor = ref(null)
+let typeColor = ref(null);
 const msgType = computed(() => {
   if (props.toastData) {
-    let msgType = "";
+    let msgType = '';
     switch (JSON.parse(props.toastData).type) {
-      case "error":
-        msgType = "error";
-        typeColor = "#c31b19"
+      case 'error':
+        msgType = 'error';
+        typeColor = '#c31b19';
         break;
-      case "info":
-        msgType = "info";
-        typeColor = "#0d2bed"
+      case 'info':
+        msgType = 'info';
+        typeColor = '#0d2bed';
         break;
       default:
-        msgType = "success";
-        typeColor = "#6eb531";
+        msgType = 'success';
+        typeColor = '#6eb531';
     }
     return msgType;
   } else {
-    typeColor = "#0d2bed"
+    typeColor = '#0d2bed';
     return defaultData.type;
   }
 });
 
 const defaultStyle = {
-  position: "center",
-  decoration: true,
+  position: 'center',
+  decoration: false,
   colorized: false,
   backdrop: false,
-  color: "#ffb700",
+  color: '#ffb700',
   font: "'Open Sans', sans-serif",
 };
 const applyStyle = computed(() => {
   return props.toastStyle ? JSON.parse(props.toastStyle) : defaultStyle;
 });
 
-const active = ref("false");
+const active = ref(false);
 watch(
   () => props.isActive,
   (newValue, oldValue) => {
@@ -236,16 +234,16 @@ watch(
     //   newValue,
     //   oldValue
     // );
-    active.value = newValue;
+    active.value = newValue === 'true';
   }
 );
 
-const emit = defineEmits(["close-toast"]);
+const emit = defineEmits(['close-toast']);
 const elem = ref(null);
 const hideToast = () => {
-  active.value = "false";
+  active.value = false;
   elem.value.dispatchEvent(
-    new CustomEvent("close-toast", {
+    new CustomEvent('close-toast', {
       bubbles: true,
       composed: true,
     })
@@ -261,10 +259,23 @@ const hideToast = () => {
   color: #2c3e50;
   margin-top: 60px;
 }
+#elem {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -9;
+  display: flex;
+  min-height: 80vh;
+}
+.infront {
+  z-index: 9 !important;
+}
 .toast {
   max-width: 500px;
   min-width: 150px;
-  position: fixed;
+  /* position: fixed; */
   background-color: white;
   border-radius: 0.5em;
   box-shadow: 5px 5px 12px rgb(0 0 0 / 15%);
@@ -282,7 +293,7 @@ const hideToast = () => {
   /* padding-bottom: 1rem; */
   font-weight: 600;
   margin: -1rem;
-  padding: .5rem;
+  padding: 0.5rem;
   border-bottom: 2px solid v-bind(typeColor);
 }
 #toast-title {
@@ -306,7 +317,7 @@ const hideToast = () => {
   opacity: 1;
   overflow: hidden;
   height: auto;
-  /* animation: "wobbles" 1s ease;  */
+  margin: 1em;
 }
 .toast.h-hide {
   padding: 0.5em;
@@ -326,9 +337,9 @@ const hideToast = () => {
   bottom: 0;
   /* background: rgba(0, 0, 0, 0.5); */
   background: transparent;
-  content: "";
+  content: '';
   z-index: 9;
-  transition: opacity 1s ease;
+  transition: all 5s;
   opacity: 1;
 }
 .backdrop::after {
@@ -342,33 +353,24 @@ const hideToast = () => {
   padding-top: 2rem;
 }
 .center {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
 }
 .left-top {
-  top: 0;
-  left: 0;
-  margin-top: 1em;
-  margin-left: 1em;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .right-top {
-  top: 0;
-  right: 0;
-  margin-top: 1em;
-  margin-right: 1em;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 .left-bottom {
-  bottom: 0;
-  left: 0;
-  margin-left: 1em;
-  margin-bottom: 1em;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 .right-bottom {
-  bottom: 0;
-  right: 0;
-  margin-right: 1em;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 .colorized {
   border: 2px solid v-bind(typeColor);
@@ -385,14 +387,14 @@ const hideToast = () => {
   fill: white;
 }
 .wobble-enter-active {
-  animation: wobbles 1s linear;
+  animation: wobbles 0.8s ease;
 }
 .wobble-leave-active {
-  animation: wobbles 1s ease;
+  /* animation: wobbles 1s linear; */
 }
 @keyframes wobbles {
   0% {
-    transform: translateY(20px);
+    transform: translateY(-20px);
     opacity: 0;
   }
   50% {
@@ -400,11 +402,11 @@ const hideToast = () => {
     opacity: 0.3;
   }
   60% {
-    transform: translateX(18px);
+    transform: translateX(8px);
     opacity: 0.3;
   }
   70% {
-    transform: translateX(-18px);
+    transform: translateX(-8px);
     opacity: 0.7;
   }
   80% {

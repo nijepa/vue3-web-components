@@ -25,26 +25,34 @@
       <custom-toast is-active toast-data toast-style>
         <span slot="additionalData">
           <div>
-            <h3>additional info</h3>
-            <p>tandar mandara broc</p>
+            <h3>additional info in slot</h3>
+            <i>tandar mandara broc</i>
           </div>
         </span>
       </custom-toast>
-
     </div>
     <script type="module" src="/main.js"></script>
     <script>
-      const toast = document.querySelector("custom-toast");
-      const td = { title: "Zuraaa", message: "ihaaaaa njihaaa", type: "error" };
-      //toast.setAttribute("toast-data", JSON.stringify(td));
-      const ts = { position: "center", decoration: false, colorized: true, backdrop: false };
+      const toast = document.querySelector('custom-toast');
+      const td = {
+        title: 'Error',
+        message: '<h3>message title</h3><p>message text</p>',
+        type: 'error',
+      };
+      toast.setAttribute("toast-data", JSON.stringify(td));
+      const ts = {
+        position: 'left-top',
+        decoration: true,
+        colorized: true,
+        backdrop: true,
+      };
       //toast.setAttribute("toast-style", JSON.stringify(ts));
       const showToast = () => {
-        toast.setAttribute("is-active", "true");
-      }
-      window.addEventListener("close-toast", toastClosed);
+        toast.setAttribute('is-active', 'true');
+      };
+      window.addEventListener('close-toast', toastClosed);
       function toastClosed() {
-        toast.setAttribute("is-active", "false");
+        toast.setAttribute('is-active', 'false');
       }
     </script>
   </body>
