@@ -1,15 +1,19 @@
 <template>
-  <div ref="toastWrapper" :class="[applyStyle.position, { 'infront': active }]" id="toast-wrapper">
+  <div
+    ref="toastWrapper"
+    :class="[applyStyle.position, { infront: active }]"
+    id="toast-wrapper"
+  >
     <div
       class="toast__open"
-      :class="[{ 'h-hide': !active }, { 'backdrop': applyStyle.backdrop }]"
+      :class="[{ 'h-hide': !active }, { backdrop: applyStyle.backdrop }]"
       @click="hideToast"
     ></div>
     <transition name="wobble" appear v-show="active">
       <div
         id="toast"
         class="toast"
-        :class="[{ 'h-hide': !active }, { 'colorized': applyStyle.colorized }]"
+        :class="[{ 'h-hide': !active }, { colorized: applyStyle.colorized }]"
       >
         <div class="toast__title" :class="msgType">
           <span id="toast-title">
@@ -190,24 +194,24 @@ const showData = computed(() => {
 });
 let typeColor = ref(null);
 const msgType = computed(() => {
-  if (props.toastData) {
-    let msgType = '';
+  if (props.toastData.length) {
+    //let msgType = '';
     switch (JSON.parse(props.toastData).type) {
       case 'error':
-        msgType = 'error';
-        typeColor = '#c31b19';
+        //msgType = 'error';
+        typeColor.value = 'rgb(195, 27, 25)';
         break;
       case 'info':
-        msgType = 'info';
-        typeColor = '#0d2bed';
+        //msgType = 'info';
+        typeColor.value = 'rgb(13, 43, 237)';
         break;
       default:
-        msgType = 'success';
-        typeColor = '#6eb531';
+        //msgType = 'success';
+        typeColor.value = 'rgb(110, 181, 49)';
     }
-    return msgType;
+    return JSON.parse(props.toastData).type;
   } else {
-    typeColor = '#0d2bed';
+    typeColor.value = 'rgb(13, 43, 237)';
     return defaultData.type;
   }
 });
@@ -340,7 +344,7 @@ const hideToast = () => {
   align-items: center;
   column-gap: 0.5em;
   text-align: left;
-  padding-top: 1em;
+  padding-top: 2em;
 }
 .center {
   justify-content: center;
