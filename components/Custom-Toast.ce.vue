@@ -195,18 +195,14 @@ const showData = computed(() => {
 let typeColor = ref(null);
 const msgType = computed(() => {
   if (props.toastData.length) {
-    //let msgType = '';
     switch (JSON.parse(props.toastData).type) {
       case 'error':
-        //msgType = 'error';
         typeColor.value = 'rgb(195, 27, 25)';
         break;
       case 'info':
-        //msgType = 'info';
         typeColor.value = 'rgb(13, 43, 237)';
         break;
       default:
-        //msgType = 'success';
         typeColor.value = 'rgb(110, 181, 49)';
     }
     return JSON.parse(props.toastData).type;
@@ -273,10 +269,8 @@ const hideToast = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  /* background: rgba(0, 0, 0, 0.5); */
   background: transparent;
   content: '';
-  /* z-index: 9; */
   transition: all 5s;
   opacity: 1;
 }
@@ -290,18 +284,14 @@ const hideToast = () => {
 .toast {
   max-width: 500px;
   min-width: 150px;
-  /* position: fixed; */
   background-color: white;
   border-radius: 0.5em;
   box-shadow: 5px 5px 12px rgb(0 0 0 / 15%);
   display: flex;
   flex-direction: column;
-  /* row-gap: 1em; */
   padding: 1em;
   z-index: 999;
   font-family: v-bind(defaultStyle.font);
-  /* display: block; */
-  /* padding: 1em; */
   transition: 0.5s all ease;
   opacity: 1;
   overflow: hidden;
@@ -318,7 +308,6 @@ const hideToast = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding-bottom: 1rem; */
   font-weight: 600;
   margin: -1rem;
   padding: 0.5rem;
@@ -336,7 +325,6 @@ const hideToast = () => {
   transition: all 1.4s ease;
 }
 .toast__close:hover svg {
-  /* fill: v-bind(typeColor) !important;  */
   filter: brightness(0.55);
 }
 .toast__content {
