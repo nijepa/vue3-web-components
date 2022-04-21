@@ -6,12 +6,12 @@
 ## [![Generic badge](https://img.shields.io/badge/&#9881;-HTML-green.svg?style=plastic&logo=HTML5)](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) [![Generic badge](https://img.shields.io/badge/&#9881;-CSS-blue.svg?style=plastic&logo=CSS3)](https://www.tutorialrepublic.com/css-tutorial/) [![Generic badge](https://img.shields.io/badge/&#9881;-JavaScript-yellow.svg?style=plastic&logo=JavaScript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) [![Generic badge](https://img.shields.io/badge/&#9881;-VUE.js-BRIGHTGREEN.svg?style=plastic&logo=Vue.js)](https://vuejs.org/) [![Generic badge](https://img.shields.io/badge/&#9881;-Vite-yellowgreen.svg?style=plastic&logo=Vite)](https://vitejs.dev/)
 
 <hr>
+
 #### In HTML header:
 ##### `<script type="module" crossorigin src="/assets/toast.js"></script>`
 ##### `<link rel="modulepreload" href="/assets/vue.js" />`
 
 #### Place component with or without attributes (named slot can be passed):
-
     `<custom-toast is-active toast-data toast-style>
       <span slot="additionalData">
         <h3>additional info in slot</h3>
