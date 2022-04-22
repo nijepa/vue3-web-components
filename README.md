@@ -34,23 +34,23 @@
 ##### * Set component attribute `toast-data` as JSON object
 #####   with following properties: 
 - ***`title`*** (String)
-- ***`message`*** (String - can be used html)
-- ***`type`*** (String - info, success, error)>
+- ***`message`*** (String - *can be used html*)
+- ***`type`*** (String - *info, success, error*)>
 
 ###### example: 
     const td = { title: 'some title', 
-                message: 'message', 
+                message: 'some message', 
                 type: 'info' }
     document.querySelector('custom-toast').setAttribute('toast-data', JSON.stringify(td))
 
 ##### * Styles can be set by setting attribute `toast-style`
 ##### with following properties:
-- ***`position`*** (String - center, left-top, right-top, left-bottom, right-bottom)
+- ***`position`*** (String - *center, left-top, right-top, left-bottom, right-bottom*)
 - ***`decoration`*** (Boolean)
 - ***`backdrop`*** (Boolean)
 - ***`colorized`*** (Boolean)
-- ***`color`*** (String - any color)
-- ***`font`*** (String - any font-family)</span>
+- ***`color`*** (String - *any color*)
+- ***`font`*** (String - *any font-family*)</span>
 
 ###### example:
     const ts = { position: 'center', 

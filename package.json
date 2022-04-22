@@ -1,6 +1,6 @@
 {
   "name": "toast-web-component",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "author": "Nikola Pavicevic <nijepa@gmail.com>",
   "description": "Vue3 web-component toast with Vite",
   "keywords": [
