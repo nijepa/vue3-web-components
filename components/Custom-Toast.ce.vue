@@ -261,7 +261,7 @@ const hideToast = () => {
   min-height: 80vh;
 }
 .infront {
-  z-index: 51 !important;
+  z-index: 9999 !important;
 }
 .toast__open::after {
   position: absolute;
