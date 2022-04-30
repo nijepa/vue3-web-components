@@ -28,4 +28,9 @@ export default defineConfig({
   //     }
   //   }
   // }
+  // build: {
+  //   rollupOptions: {
+  //     target: "./assets/toast.js"
+  //   }
+  // }
 });
