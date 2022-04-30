@@ -1,4 +1,9 @@
 <template>
+  <!-- <div
+    ref="toastWrapper"
+    :class="[$attrs.position || 'center', { infront: active }]"
+    id="toast-wrapper"
+  > -->
   <div
     ref="toastWrapper"
     :class="[applyStyle.position, { infront: active }]"
@@ -131,9 +136,16 @@
     </transition>
   </div>
 </template>
-
+// <script>
+// export default{
+//   inheritAttrs: false
+// }
+// </script>
 <script setup>
 import { ref, computed, watch } from 'vue';
+// import { ref, computed, watch, useAttrs } from 'vue';
+// const attrs = useAttrs()
+// console.log(8, attrs)
 
 const props = defineProps({
   isActive: {
