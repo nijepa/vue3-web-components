@@ -30,7 +30,6 @@
           </div>
         </span>
       </custom-toast>
-    </div>
     <script type="module" src="/main.js"></script>
     <script>
       const toast = document.querySelector('custom-toast');
@@ -45,6 +44,7 @@
         decoration: true,
         colorized: true,
         backdrop: false,
+        color: '#ffb700'
       };
       toast.setAttribute("toast-style", JSON.stringify(ts));
       const showToast = () => {
