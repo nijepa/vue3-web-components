@@ -18,58 +18,60 @@
       <div
         id="toast"
         class="toast"
-        :class="[{ 'h-hide': !active }, { colorized: applyStyle.colorized }]"
+        :class="[{ 'h-hide': !active }, { colorized: applyStyle.decoration }]"
       >
         <div class="toast__title" :class="msgType">
           <span id="toast-title">
-            <svg
-              v-if="msgType === 'success'"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="rgb(110, 181, 49)"
-              class="bi bi-check-square"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
-              />
-              <path
-                d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"
-              />
-            </svg>
-            <svg
-              v-if="msgType === 'error'"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="rgb(195, 27, 25)"
-              class="bi bi-exclamation-square"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
-              />
-              <path
-                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
-              />
-            </svg>
-            <svg
-              v-if="msgType === 'info'"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="rgb(13, 43, 237)"
-              class="bi bi-info-square"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
-              />
-              <path
-                d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
-              />
-            </svg>
+            <div v-if="!applyStyle.colorized">
+              <svg
+                v-if="msgType === 'success'"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="rgb(110, 181, 49)"
+                class="bi bi-check-square"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+                />
+                <path
+                  d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"
+                />
+              </svg>
+              <svg
+                v-if="msgType === 'error'"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="rgb(195, 27, 25)"
+                class="bi bi-exclamation-square"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+                />
+                <path
+                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+                />
+              </svg>
+              <svg
+                v-if="msgType === 'info'"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="rgb(13, 43, 237)"
+                class="bi bi-info-square"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+                />
+                <path
+                  d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+                />
+              </svg>
+            </div>
             {{ showData.title }}
           </span>
           <span class="toast__close" @click="hideToast">
@@ -145,7 +147,6 @@
 import { ref, computed, watch } from 'vue';
 // import { ref, computed, watch, useAttrs } from 'vue';
 // const attrs = useAttrs()
-// console.log(8, attrs)
 
 const props = defineProps({
   isActive: {
@@ -154,55 +155,181 @@ const props = defineProps({
   },
   toastData: {
     type: String,
-    default: { title: 'title', message: 'msg', type: 'success' },
+    default: JSON.stringify({
+      title: 'set custom title',
+      message: `<h3>custom-toast - Usage</h3>
+<h5>In HTML header:</h5>
+<p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
+<p><code>&lt;link rel="modulepreload" href="/vue.js" /&gt;</code></p>
+<h5>Place component with or without attributes</h5>
+<h5>(named slot can be passed):</h5>
+<pre>
+  <code>
+    &lt;custom-toast is-active toast-data toast-style&gt;
+    &lt;span slot=&quot;additionalData&quot;&gt;
+    &lt;h3&gt;additional info in slot&lt;/h3&gt;
+    &lt;p&gt;additional message&lt;/p&gt;
+    &lt;/span&gt;
+    &lt;/custom-toast&gt;
+  </code>
+</pre>
+<h5>Reference component:</h5>
+<h5>
+  <code>const toast = document.querySelector('custom-toast')</code>
+</h5>
+<h5>Set <code>is-active</code> attribute to <code>true</code> to show
+  toast:</h5>
+<pre><code>const showToast = () =&gt; {
+  toast.setAttribute(&#39;is-active&#39;, &#39;true&#39;)
+}</code></pre>
+<h5>Listen to event <code>close-toast</code>:</h5>
+<pre><code>window.addEventListener(&#39;close-toast&#39;, toastClosed)
+function toastClosed() {
+  toast.setAttribute(&#39;is-active&#39;, &#39;false&#39;)
+}</code></pre>
+<h5>* Set component attribute <code>toast-data</code> as JSON
+  object</h5>
+<h5>with following properties:</h5>
+<ul>
+  <li><strong><em><code>title</code></em></strong> (String)</li>
+  <li><strong><em><code>message</code></em></strong> (String - <em>can be used html</em>)</li>
+  <li><strong><em><code>type</code></em></strong> (String - <em>info, success, error</em>)&gt;</li>
+</ul>
+<h6>example:</h6>
+<pre><code>const td = { title: &#39;some title&#39;, 
+            message: &#39;some message&#39;, 
+            type: &#39;info&#39; }
+document.querySelector(&#39;custom-toast&#39;).setAttribute(&#39;toast-data&#39;, JSON.stringify(td))</code></pre>
+<h5>* Styles can be set by setting attribute
+  <code>toast-style</code></h5>
+<h5>with following properties:</h5>
+<ul>
+  <li><strong><em><code>position</code></em></strong> (String - <em>center, left-top, right-top, left-bottom,
+      right-bottom</em>)</li>
+  <li><strong><em><code>decoration</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>backdrop</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>colorized</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>color</code></em></strong> (String - <em>any color</em>)</li>
+  <li><strong><em><code>font</code></em></strong> (String - <em>any font-family</em>)</span></li>
+</ul>
+<h6>example:</h6>
+<pre><code>const ts = { position: &#39;center&#39;, 
+            decoration: false, 
+            colorized: false, 
+            backdrop: false, 
+            color: &quot;#ffffff&quot;, 
+            font: &quot;&#39;Open Sans&#39;, sans-serif&quot; }
+document.querySelector(&#39;custom-toast&#39;).setAttribute(&#39;toast-style&#39;, JSON.stringify(ts))
+</code></pre>
+<style>
+  h3, h4, h5, h6, p, pre, code, ul {
+    margin: 0;
+  }
+</style>`,
+      type: 'info',
+    }),
   },
   toastStyle: {
     type: String,
-    default: {
+    default: JSON.stringify({
       position: 'center',
-      decoration: true,
+      decoration: false,
       colorized: false,
       backdrop: false,
       color: '#ffb700',
       font: "'Open Sans', sans-serif",
-    },
+    }),
   },
 });
 
 const defaultData = {
   title: 'set custom title',
-  message: `<p>* Set component attribute <b>toast-data</b> as JSON object</p>
-            <div>
-            <p>with following properties: </p>
-            <ul>
-            <li><i>title</i> <span>(String)</span></li>
-            <li><i>message</i> <span>(String - can be used html)</span></li>
-            <li><i>type</i> <span>(String - info, success, error)</span></li>
-            </ul>
-            </div>
-            <li>example: </li>
-            <p><b><i>const td = { title: 'some title', message: 'message', type: 'info' }</i></b></p>
-            <p><b><i>document.querySelector('custom-toast').setAttribute('toast-data', JSON.stringify(td))</i></b></p>
-            <br />
-            <p>* Styles can be set by setting attribute <b>toast-style</b></p>
-            <div>
-            <p>with following properties:</p>
-            <ul>
-            <li><i>position</i> <span>(String - center, left-top, right-top, left-bottom, right-bottom)</span></li>
-            <li><i>decoration</i> <span>(Boolean)</span></li>
-            <li><i>backdrop</i> <span>(Boolean)</span></li>
-            <li><i>colorized</i> <span>(Boolean)</span></li>
-            <li><i>color</i> <span>(String - any color)</span></li>
-            <li><i>font</i> <span>(String - any font-family)</span></li>
-            </ul>
-            </div>
-            <li>example:</li>
-            <p><b><i>const ts = { position: 'center', decoration: false, backdrop: false, color: "#ffffff", font: "'Open Sans', sans-serif" }</i></b></p>
-            <p><b><i>document.querySelector('custom-toast').setAttribute('toast-style', JSON.stringify(ts))</i></b></p>`,
+  message: `<h3>custom-toast - Usage</h3>
+<h5>In HTML header:</h5>
+<p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
+<p><code>&lt;link rel="modulepreload" href="/vue.js" /&gt;</code></p>
+<h5>Place component with or without attributes</h5>
+<h5>(named slot can be passed):</h5>
+<pre>
+  <code>
+    &lt;custom-toast is-active toast-data toast-style&gt;
+    &lt;span slot=&quot;additionalData&quot;&gt;
+    &lt;h3&gt;additional info in slot&lt;/h3&gt;
+    &lt;p&gt;additional message&lt;/p&gt;
+    &lt;/span&gt;
+    &lt;/custom-toast&gt;
+  </code>
+</pre>
+<h5>Reference component:</h5>
+<h5>
+  <code>const toast = document.querySelector('custom-toast')</code>
+</h5>
+<h5>Set <code>is-active</code> attribute to <code>true</code> to show
+  toast:</h5>
+<pre><code>const showToast = () =&gt; {
+  toast.setAttribute(&#39;is-active&#39;, &#39;true&#39;)
+}</code></pre>
+<h5>Listen to event <code>close-toast</code>:</h5>
+<pre><code>window.addEventListener(&#39;close-toast&#39;, toastClosed)
+function toastClosed() {
+  toast.setAttribute(&#39;is-active&#39;, &#39;false&#39;)
+}</code></pre>
+<h5>* Set component attribute <code>toast-data</code> as JSON
+  object</h5>
+<h5>with following properties:</h5>
+<ul>
+  <li><strong><em><code>title</code></em></strong> (String)</li>
+  <li><strong><em><code>message</code></em></strong> (String - <em>can be used html</em>)</li>
+  <li><strong><em><code>type</code></em></strong> (String - <em>info, success, error</em>)&gt;</li>
+</ul>
+<h6>example:</h6>
+<pre>
+  <code>
+    const td = { title: &#39;some title&#39;, 
+            message: &#39;some message&#39;, 
+            type: &#39;info&#39; }
+    document.querySelector(&#39;custom-toast&#39;)
+      .setAttribute(&#39;toast-data&#39;, JSON.stringify(td))
+  </code>
+</pre>
+<h5>* Styles can be set by setting attribute
+  <code>toast-style</code></h5>
+<h5>with following properties:</h5>
+<ul>
+  <li><strong><em><code>position</code></em></strong> (String - <em>center, left-top, right-top, left-bottom,
+      right-bottom</em>)</li>
+  <li><strong><em><code>decoration</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>backdrop</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>colorized</code></em></strong> (Boolean)</li>
+  <li><strong><em><code>color</code></em></strong> (String - <em>any color</em>)</li>
+  <li><strong><em><code>font</code></em></strong> (String - <em>any font-family</em>)</span></li>
+</ul>
+<h6>example:</h6>
+<pre>
+  <code>
+    const ts = { position: &#39;center&#39;, 
+            decoration: false, 
+            colorized: false, 
+            backdrop: false, 
+            color: &quot;#ffffff&quot;, 
+            font: &quot;&#39;Open Sans&#39;, sans-serif&quot; }
+  </code>
+  <code>
+    document.querySelector(&#39;custom-toast&#39;)
+        .setAttribute(&#39;toast-style&#39;, JSON.stringify(ts))
+  </code>
+</pre>
+<style>
+  h3, h4, h5, h6, p, pre, code, ul {
+    margin: 0;
+  }
+</style>`,
   type: 'info',
 };
 const showData = computed(() => {
-  return props.toastData ? JSON.parse(props.toastData) : defaultData;
+  console.log(1, props.toastData)
+  //return props.toastData ? JSON.parse(props.toastData) : defaultData;
+  return JSON.parse(props.toastData)
 });
 let typeColor = ref(null);
 const msgType = computed(() => {
@@ -233,7 +360,8 @@ const defaultStyle = {
   font: "'Open Sans', sans-serif",
 };
 const applyStyle = computed(() => {
-  return props.toastStyle ? JSON.parse(props.toastStyle) : defaultStyle;
+  //return props.toastStyle ? JSON.parse(props.toastStyle) : defaultStyle;
+  return JSON.parse(props.toastStyle)
 });
 
 const active = ref(false);

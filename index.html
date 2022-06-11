@@ -21,7 +21,6 @@
     <button onclick="showToast()">toast</button>
     <div id="app">
       <h1>Vue Web Components!</h1>
-
       <custom-toast >
         <span slot="additionalData">
           <div>
@@ -30,15 +29,16 @@
           </div>
         </span>
       </custom-toast>
+    </div>
     <script type="module" src="/main.js"></script>
     <script>
       const toast = document.querySelector('custom-toast');
       const td = {
         title: 'Error',
         message: '<h3>message title</h3><p>message text</p>',
-        type: 'success',
+        type: 'error',
       };
-      toast.setAttribute("toast-data", JSON.stringify(td));
+      //toast.setAttribute("toast-data", JSON.stringify(td));
       const ts = {
         position: 'center',
         decoration: true,
@@ -46,7 +46,7 @@
         backdrop: false,
         color: '#ffb700'
       };
-      toast.setAttribute("toast-style", JSON.stringify(ts));
+      //toast.setAttribute("toast-style", JSON.stringify(ts));
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };
