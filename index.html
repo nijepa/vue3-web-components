@@ -34,20 +34,31 @@
     <script type="module" src="/main.js"></script>
     <script>
       const toast = document.querySelector('custom-toast');
+      function setAttributes(el, attrs) {
+        for(var key in attrs) {
+          el.setAttribute(key, attrs[key]);
+        }
+      }
       const td = {
-        title: 'Error',
-        message: '<h3>message title</h3><p>message text</p>',
-        type: 'error',
+        title: 'Success',
+        message: '<h3>message title</h3><p>message text</p>uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',
+        type: 'success',
       };
       //toast.setAttribute("toast-data", JSON.stringify(td));
+      //toast.setAttribute("message", td);
+      setAttributes(toast, td)
       const ts = {
         position: 'center',
-        decoration: true,
-        colorized: true,
+        decoration: false,
+        colorized: false,
         backdrop: false,
         color: '#ffb700'
       };
-      //toast.setAttribute("toast-style", JSON.stringify(ts));
+      toast.setAttribute("toast-style", JSON.stringify(ts));
+      //toast.setAttribute("position", 'center')
+      
+      setAttributes(toast, ts)
+
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };

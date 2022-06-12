@@ -11,21 +11,23 @@
   >
     <div
       class="toast__open"
-      :class="[{ 'h-hide': !active }, { backdrop: applyStyle.backdrop }]"
+      :class="[{ hide: !active }, { backdrop: applyStyle.backdrop === 'true' }]"
       @click="hideToast"
     ></div>
     <transition name="wobble" appear v-show="active">
       <div
         id="toast"
         class="toast"
-        :class="[{ 'h-hide': !active }, { colorized: applyStyle.decoration }]"
+        :class="[
+          { hide: !active },
+          { colorized: applyStyle.colorized === 'true' },
+        ]"
       >
         <div class="toast__title" :class="msgType">
           <span id="toast-title">
-            <div v-if="!applyStyle.colorized">
+            <div v-if="applyStyle.colorized === 'false'">
               <svg
                 v-if="msgType === 'success'"
-                xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 fill="rgb(110, 181, 49)"
@@ -41,7 +43,6 @@
               </svg>
               <svg
                 v-if="msgType === 'error'"
-                xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 fill="rgb(195, 27, 25)"
@@ -57,7 +58,6 @@
               </svg>
               <svg
                 v-if="msgType === 'info'"
-                xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 fill="rgb(13, 43, 237)"
@@ -72,11 +72,10 @@
                 />
               </svg>
             </div>
-            {{ showData.title }}
+            {{ applyData.title }}
           </span>
           <span class="toast__close" @click="hideToast">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               width="32"
               height="32"
               fill="currentColor"
@@ -90,10 +89,14 @@
           </span>
         </div>
         <div class="toast__content">
-          <span v-if="applyStyle.decoration">
+          <span
+            v-if="
+              applyStyle.decoration === 'true' ||
+              applyStyle.colorized === 'true'
+            "
+          >
             <svg
               v-if="msgType === 'error'"
-              xmlns="http://www.w3.org/2000/svg"
               width="48"
               height="48"
               fill="rgb(195, 27, 25)"
@@ -106,7 +109,6 @@
             </svg>
             <svg
               v-if="msgType === 'success'"
-              xmlns="http://www.w3.org/2000/svg"
               width="48"
               height="48"
               fill="rgb(110, 181, 49)"
@@ -119,7 +121,6 @@
             </svg>
             <svg
               v-if="msgType === 'info'"
-              xmlns="http://www.w3.org/2000/svg"
               width="48"
               height="48"
               fill="rgb(13, 43, 237)"
@@ -131,119 +132,50 @@
               />
             </svg>
           </span>
-          <div id="toast-msg" v-html="showData.message"></div>
+          <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <slot name="additionalData" />
       </div>
     </transition>
   </div>
 </template>
-// <script>
-// export default{
-//   inheritAttrs: false
-// }
-// </script>
-<script setup>
-import { ref, computed, watch } from 'vue';
-// import { ref, computed, watch, useAttrs } from 'vue';
-// const attrs = useAttrs()
 
+<!-- <script>
+export default{
+  inheritAttrs: false
+}
+
+</script> -->
+<script setup>
+import { ref, computed, watch, useAttrs } from "vue";
+
+// setting props
 const props = defineProps({
   isActive: {
     type: String,
-    default: 'false',
+    default: "false",
   },
   toastData: {
     type: String,
-    default: JSON.stringify({
-      title: 'set custom title',
-      message: `<h3>custom-toast - Usage</h3>
-<h5>In HTML header:</h5>
-<p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
-<p><code>&lt;link rel="modulepreload" href="/vue.js" /&gt;</code></p>
-<h5>Place component with or without attributes</h5>
-<h5>(named slot can be passed):</h5>
-<pre>
-  <code>
-    &lt;custom-toast is-active toast-data toast-style&gt;
-    &lt;span slot=&quot;additionalData&quot;&gt;
-    &lt;h3&gt;additional info in slot&lt;/h3&gt;
-    &lt;p&gt;additional message&lt;/p&gt;
-    &lt;/span&gt;
-    &lt;/custom-toast&gt;
-  </code>
-</pre>
-<h5>Reference component:</h5>
-<h5>
-  <code>const toast = document.querySelector('custom-toast')</code>
-</h5>
-<h5>Set <code>is-active</code> attribute to <code>true</code> to show
-  toast:</h5>
-<pre><code>const showToast = () =&gt; {
-  toast.setAttribute(&#39;is-active&#39;, &#39;true&#39;)
-}</code></pre>
-<h5>Listen to event <code>close-toast</code>:</h5>
-<pre><code>window.addEventListener(&#39;close-toast&#39;, toastClosed)
-function toastClosed() {
-  toast.setAttribute(&#39;is-active&#39;, &#39;false&#39;)
-}</code></pre>
-<h5>* Set component attribute <code>toast-data</code> as JSON
-  object</h5>
-<h5>with following properties:</h5>
-<ul>
-  <li><strong><em><code>title</code></em></strong> (String)</li>
-  <li><strong><em><code>message</code></em></strong> (String - <em>can be used html</em>)</li>
-  <li><strong><em><code>type</code></em></strong> (String - <em>info, success, error</em>)&gt;</li>
-</ul>
-<h6>example:</h6>
-<pre><code>const td = { title: &#39;some title&#39;, 
-            message: &#39;some message&#39;, 
-            type: &#39;info&#39; }
-document.querySelector(&#39;custom-toast&#39;).setAttribute(&#39;toast-data&#39;, JSON.stringify(td))</code></pre>
-<h5>* Styles can be set by setting attribute
-  <code>toast-style</code></h5>
-<h5>with following properties:</h5>
-<ul>
-  <li><strong><em><code>position</code></em></strong> (String - <em>center, left-top, right-top, left-bottom,
-      right-bottom</em>)</li>
-  <li><strong><em><code>decoration</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>backdrop</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>colorized</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>color</code></em></strong> (String - <em>any color</em>)</li>
-  <li><strong><em><code>font</code></em></strong> (String - <em>any font-family</em>)</span></li>
-</ul>
-<h6>example:</h6>
-<pre><code>const ts = { position: &#39;center&#39;, 
-            decoration: false, 
-            colorized: false, 
-            backdrop: false, 
-            color: &quot;#ffffff&quot;, 
-            font: &quot;&#39;Open Sans&#39;, sans-serif&quot; }
-document.querySelector(&#39;custom-toast&#39;).setAttribute(&#39;toast-style&#39;, JSON.stringify(ts))
-</code></pre>
-<style>
-  h3, h4, h5, h6, p, pre, code, ul {
-    margin: 0;
-  }
-</style>`,
-      type: 'info',
-    }),
   },
   toastStyle: {
     type: String,
-    default: JSON.stringify({
-      position: 'center',
-      decoration: false,
-      colorized: false,
-      backdrop: false,
-      color: '#ffb700',
-      font: "'Open Sans', sans-serif",
-    }),
   },
 });
 
-const defaultData = {
-  title: 'set custom title',
+// setting attributes
+const attrs = useAttrs();
+const setAttrs = (prop) => {
+  Object.keys(attrs).forEach((a) => {
+    if (Object.keys(prop).includes(a)) {
+      prop[a] = attrs[a];
+    }
+  });
+};
+
+// setting up default data & applying them with prop or data attributes
+const defaultData = ref({
+  title: "set custom title",
   message: `<h3>custom-toast - Usage</h3>
 <h5>In HTML header:</h5>
 <p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
@@ -324,61 +256,79 @@ function toastClosed() {
     margin: 0;
   }
 </style>`,
-  type: 'info',
-};
-const showData = computed(() => {
-  console.log(1, props.toastData)
-  //return props.toastData ? JSON.parse(props.toastData) : defaultData;
-  return JSON.parse(props.toastData)
+  type: "info",
 });
-let typeColor = ref(null);
-const msgType = computed(() => {
-  if (props.toastData.length) {
-    switch (JSON.parse(props.toastData).type) {
-      case 'error':
-        typeColor.value = 'rgb(195, 27, 25)';
-        break;
-      case 'info':
-        typeColor.value = 'rgb(13, 43, 237)';
-        break;
-      default:
-        typeColor.value = 'rgb(110, 181, 49)';
-    }
-    return JSON.parse(props.toastData).type;
-  } else {
-    typeColor.value = 'rgb(13, 43, 237)';
-    return defaultData.type;
-  }
+const applyData = computed(() => {
+  if (props.toastData)
+    defaultData.value = {
+      ...defaultData.value,
+      ...JSON.parse(props.toastData),
+    };
+  attrs && setAttrs(defaultData.value);
+  return defaultData.value;
 });
 
-const defaultStyle = {
-  position: 'center',
+// setting type of the toast
+let typeColor = ref(null);
+let types = [
+  { type: "error", val: "rgb(195, 27, 25)" },
+  { type: "info", val: "rgb(13, 43, 237)" },
+  { type: "success", val: "rgb(110, 181, 49)" },
+];
+const msgType = computed(() => {
+  const toastType = types.find((t) => t.type === applyData.value.type);
+  typeColor.value = toastType.val;
+  return toastType.type;
+  // switch (applyData.value.type) {
+  //   case "error":
+  //     typeColor.value = "rgb(195, 27, 25)";
+  //     break;
+  //   case "info":
+  //     typeColor.value = "rgb(13, 43, 237)";
+  //     break;
+  //   default:
+  //     typeColor.value = "rgb(110, 181, 49)";
+  // }
+  // return applyData.value.type;
+});
+
+// setting up default styles & applying them with prop or style attributes
+const defaultStyle = ref({
+  position: "center",
   decoration: false,
   colorized: false,
   backdrop: false,
-  color: '#ffb700',
+  color: "#ffb700",
   font: "'Open Sans', sans-serif",
-};
+});
 const applyStyle = computed(() => {
-  //return props.toastStyle ? JSON.parse(props.toastStyle) : defaultStyle;
-  return JSON.parse(props.toastStyle)
+  if (props.toastStyle)
+    defaultStyle.value = {
+      ...defaultStyle.value,
+      ...JSON.parse(props.toastStyle),
+    };
+  attrs && setAttrs(defaultStyle.value);
+  console.log(defaultStyle.value);
+  return defaultStyle.value;
 });
 
+// setting toast state
 const active = ref(false);
 watch(
   () => props.isActive,
   (newValue, oldValue) => {
     // console.log("Watch props.selected function called with args:", newValue, oldValue);
-    active.value = newValue === 'true';
+    active.value = newValue === "true";
   }
 );
 
-const emit = defineEmits(['close-toast']);
+// creating & emitting events
+const emit = defineEmits(["close-toast"]);
 const toastWrapper = ref(null);
 const hideToast = () => {
   active.value = false;
   toastWrapper.value.dispatchEvent(
-    new CustomEvent('close-toast', {
+    new CustomEvent("close-toast", {
       bubbles: true,
       composed: true,
     })
@@ -410,14 +360,14 @@ const hideToast = () => {
   right: 0;
   bottom: 0;
   background: transparent;
-  content: '';
+  content: "";
   transition: all 5s;
   opacity: 1;
 }
 .backdrop::after {
   background: rgba(0, 0, 0, 0.5);
 }
-.toast__open.h-hide {
+.toast__open.hide {
   display: none;
   opacity: 0;
 }
@@ -431,14 +381,14 @@ const hideToast = () => {
   flex-direction: column;
   padding: 1em;
   z-index: 999;
-  font-family: v-bind(defaultStyle.font);
+  font-family: v-bind(applyStyle.font);
   transition: 0.5s all ease;
   opacity: 1;
   overflow: hidden;
   height: auto;
   margin: 1em;
 }
-.toast.h-hide {
+.toast.hide {
   padding: 0.5em;
   opacity: 0;
   height: 3.5em;
@@ -473,6 +423,7 @@ const hideToast = () => {
   column-gap: 0.5em;
   text-align: left;
   padding-top: 2em;
+  word-break: break-all;
 }
 .center {
   justify-content: center;
