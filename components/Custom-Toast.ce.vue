@@ -11,21 +11,18 @@
   >
     <div
       class="toast__open"
-      :class="[{ hide: !active }, { backdrop: applyStyle.backdrop === 'true' }]"
+      :class="[{ hide: !active }, { backdrop: applyStyle.backdrop }]"
       @click="hideToast"
     ></div>
     <transition name="wobble" appear v-show="active">
       <div
         id="toast"
         class="toast"
-        :class="[
-          { hide: !active },
-          { colorized: applyStyle.colorized === 'true' },
-        ]"
+        :class="[{ hide: !active }, { colorized: applyStyle.colorized }]"
       >
         <div class="toast__title" :class="msgType">
           <span id="toast-title">
-            <div v-if="applyStyle.colorized === 'false'">
+            <div v-if="!applyStyle.colorized && !applyStyle.decoration">
               <svg
                 v-if="msgType === 'success'"
                 width="24"
@@ -89,12 +86,7 @@
           </span>
         </div>
         <div class="toast__content">
-          <span
-            v-if="
-              applyStyle.decoration === 'true' ||
-              applyStyle.colorized === 'true'
-            "
-          >
+          <span v-if="applyStyle.decoration || applyStyle.colorized">
             <svg
               v-if="msgType === 'error'"
               width="48"
@@ -165,10 +157,13 @@ const props = defineProps({
 
 // setting attributes
 const attrs = useAttrs();
+const booleans = ["decoration", "colorized", "backdrop"];
 const setAttrs = (prop) => {
   Object.keys(attrs).forEach((a) => {
     if (Object.keys(prop).includes(a)) {
-      prop[a] = attrs[a];
+      if (booleans.includes(prop[a])) {
+        prop[a] = attrs[a] === true;
+      } else prop[a] = attrs[a];
     }
   });
 };
@@ -308,7 +303,6 @@ const applyStyle = computed(() => {
       ...JSON.parse(props.toastStyle),
     };
   attrs && setAttrs(defaultStyle.value);
-  console.log(defaultStyle.value);
   return defaultStyle.value;
 });
 
