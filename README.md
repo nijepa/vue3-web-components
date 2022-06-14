@@ -54,7 +54,7 @@
     }
   }
 ```
-### - *passing attributes example:*
+#### - *passing attributes example:*
 ```js
   const td = { title: 'some title', 
               message: 'some message', 
@@ -77,7 +77,7 @@
 - ***`message`*** (String - *can be used html*)
 - ***`type`*** (String - *info, success, error*)
 
-### - *passing content example* 
+#### - *passing content example* 
 ```js
   const td = { title: 'some title', 
               message: 'some message', 
