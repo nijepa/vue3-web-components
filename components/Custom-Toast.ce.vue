@@ -448,10 +448,10 @@ const hideToast = () => {
 }
 .colorized .toast__title span {
   background-color: v-bind(typeColor);
-  color: white !important;
+  color: #ffffff !important;
 }
 .colorized .toast__title svg {
-  fill: white;
+  fill: #ffffff;
 }
 .wobble-enter-active {
   animation: wobbles 0.8s ease;
