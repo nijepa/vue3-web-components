@@ -71,7 +71,7 @@
             </div>
             {{ applyData.title }}
           </span>
-          <span class="toast__close" @click="hideToast">
+          <span v-if="!isFixed" class="toast__close" @click="hideToast">
             <svg
               width="32"
               height="32"
@@ -139,13 +139,14 @@ export default{
 
 </script> -->
 <script setup>
-import { ref, computed, watch, useAttrs } from "vue";
+import { ref, computed, watch, useAttrs } from 'vue';
+import { useFetch } from '../composables/useFetch';
 
 // setting props
 const props = defineProps({
   isActive: {
     type: String,
-    default: "false",
+    default: 'false',
   },
   toastData: {
     type: String,
@@ -153,11 +154,25 @@ const props = defineProps({
   toastStyle: {
     type: String,
   },
+  fixed: {
+    type: String,
+    default: 'false',
+  },
+  logoutUrl: {
+    type: String,
+    default: '',
+  },
 });
+const isFixed = computed(() => {
+  return props.fixed === 'true';
+});
+const logout = async () => {
+  const islogout = await useFetch(props.logoutUrl, 'POST');
+}
 
 // setting attributes
 const attrs = useAttrs();
-const booleans = ["decoration", "colorized", "backdrop"];
+const booleans = ['decoration', 'colorized', 'backdrop'];
 const setAttrs = (prop) => {
   Object.keys(attrs).forEach((a) => {
     if (Object.keys(prop).includes(a)) {
@@ -170,7 +185,7 @@ const setAttrs = (prop) => {
 
 // setting up default data & applying them with prop or data attributes
 const defaultData = ref({
-  title: "set custom title",
+  title: 'set custom title',
   message: `<h3>custom-toast - Usage</h3>
 <h5>In HTML header:</h5>
 <p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
@@ -251,7 +266,7 @@ function toastClosed() {
     margin: 0;
   }
 </style>`,
-  type: "info",
+  type: 'info',
 });
 const applyData = computed(() => {
   if (props.toastData)
@@ -266,9 +281,9 @@ const applyData = computed(() => {
 // setting type of the toast
 let typeColor = ref(null);
 let types = [
-  { type: "error", val: "rgb(195, 27, 25)" },
-  { type: "info", val: "rgb(13, 43, 237)" },
-  { type: "success", val: "rgb(110, 181, 49)" },
+  { type: 'error', val: 'rgb(195, 27, 25)' },
+  { type: 'info', val: 'rgb(13, 43, 237)' },
+  { type: 'success', val: 'rgb(110, 181, 49)' },
 ];
 const msgType = computed(() => {
   const toastType = types.find((t) => t.type === applyData.value.type);
@@ -289,11 +304,11 @@ const msgType = computed(() => {
 
 // setting up default styles & applying them with prop or style attributes
 const defaultStyle = ref({
-  position: "center",
+  position: 'center',
   decoration: false,
   colorized: false,
   backdrop: false,
-  color: "#ffb700",
+  color: '#ffb700',
   font: "'Open Sans', sans-serif",
 });
 const applyStyle = computed(() => {
@@ -312,21 +327,23 @@ watch(
   () => props.isActive,
   (newValue, oldValue) => {
     // console.log("Watch props.selected function called with args:", newValue, oldValue);
-    active.value = newValue === "true";
+    active.value = newValue === 'true';
   }
 );
 
 // creating & emitting events
-const emit = defineEmits(["close-toast"]);
+const emit = defineEmits(['close-toast']);
 const toastWrapper = ref(null);
 const hideToast = () => {
-  active.value = false;
-  toastWrapper.value.dispatchEvent(
-    new CustomEvent("close-toast", {
-      bubbles: true,
-      composed: true,
-    })
-  );
+  if (!isFixed.value) {
+    active.value = false;
+    toastWrapper.value.dispatchEvent(
+      new CustomEvent('close-toast', {
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
 };
 </script>
 <style>
@@ -354,7 +371,7 @@ const hideToast = () => {
   right: 0;
   bottom: 0;
   background: transparent;
-  content: "";
+  content: '';
   transition: all 5s;
   opacity: 1;
 }
