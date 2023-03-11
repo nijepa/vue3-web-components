@@ -23,12 +23,12 @@
     <div id="app">
       <h1>Vue Web Components!</h1>
       <custom-toast >
-        <span slot="additionalData">
+        <!-- <span slot="additionalData">
           <div>
             <h3>additional info in slot</h3>
             <i>tandar mandara broc</i>
           </div>
-        </span>
+        </span> -->
       </custom-toast>
     </div>
     <script type="module" src="/main.js"></script>
@@ -54,11 +54,11 @@
         backdrop: true,
         color: '#ffb700'
       };
-      toast.setAttribute("toast-style", JSON.stringify(ts));
+      //toast.setAttribute("toast-style", JSON.stringify(ts));
       //toast.setAttribute("position", 'center')
-      
-      //setAttributes(toast, ts)
 
+      //setAttributes(toast, ts)
+      toast.setAttribute("fixed", 'true')
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };

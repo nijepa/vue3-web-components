@@ -126,6 +126,9 @@
           </span>
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
+        <div v-if="isFixed" class="">
+          <button @click="handleAction" class="btn">{{ actionTitle }}</button>
+        </div>
         <slot name="additionalData" />
       </div>
     </transition>
@@ -139,14 +142,14 @@ export default{
 
 </script> -->
 <script setup>
-import { ref, computed, watch, useAttrs } from 'vue';
-import { useFetch } from '../composables/useFetch';
+import { ref, computed, watch, useAttrs } from "vue";
+import { useFetch } from "../composables/useFetch";
 
 // setting props
 const props = defineProps({
   isActive: {
     type: String,
-    default: 'false',
+    default: "false",
   },
   toastData: {
     type: String,
@@ -156,23 +159,27 @@ const props = defineProps({
   },
   fixed: {
     type: String,
-    default: 'false',
+    default: "false",
   },
-  logoutUrl: {
+  actionUrl: {
     type: String,
-    default: '',
+    default: "",
   },
+  actionTitle: {
+    type: String,
+    default: 'Logout'
+  }
 });
+//
 const isFixed = computed(() => {
-  return props.fixed === 'true';
+  return props.fixed === "true";
 });
-const logout = async () => {
-  const islogout = await useFetch(props.logoutUrl, 'POST');
-}
-
+const handleAction = async () => {
+  const islogout = await useFetch(props.actionUrl, "POST");
+};
 // setting attributes
 const attrs = useAttrs();
-const booleans = ['decoration', 'colorized', 'backdrop'];
+const booleans = ["decoration", "colorized", "backdrop"];
 const setAttrs = (prop) => {
   Object.keys(attrs).forEach((a) => {
     if (Object.keys(prop).includes(a)) {
@@ -182,91 +189,11 @@ const setAttrs = (prop) => {
     }
   });
 };
-
 // setting up default data & applying them with prop or data attributes
 const defaultData = ref({
-  title: 'set custom title',
-  message: `<h3>custom-toast - Usage</h3>
-<h5>In HTML header:</h5>
-<p><code>&lt;script type="module" crossorigin src="/toast.js"&gt;&lt;/script&gt;</code></p>
-<p><code>&lt;link rel="modulepreload" href="/vue.js" /&gt;</code></p>
-<h5>Place component with or without attributes</h5>
-<h5>(named slot can be passed):</h5>
-<pre>
-  <code>
-    &lt;custom-toast is-active toast-data toast-style&gt;
-    &lt;span slot=&quot;additionalData&quot;&gt;
-    &lt;h3&gt;additional info in slot&lt;/h3&gt;
-    &lt;p&gt;additional message&lt;/p&gt;
-    &lt;/span&gt;
-    &lt;/custom-toast&gt;
-  </code>
-</pre>
-<h5>Reference component:</h5>
-<h5>
-  <code>const toast = document.querySelector('custom-toast')</code>
-</h5>
-<h5>Set <code>is-active</code> attribute to <code>true</code> to show
-  toast:</h5>
-<pre><code>const showToast = () =&gt; {
-  toast.setAttribute(&#39;is-active&#39;, &#39;true&#39;)
-}</code></pre>
-<h5>Listen to event <code>close-toast</code>:</h5>
-<pre><code>window.addEventListener(&#39;close-toast&#39;, toastClosed)
-function toastClosed() {
-  toast.setAttribute(&#39;is-active&#39;, &#39;false&#39;)
-}</code></pre>
-<h5>* Set component attribute <code>toast-data</code> as JSON
-  object</h5>
-<h5>with following properties:</h5>
-<ul>
-  <li><strong><em><code>title</code></em></strong> (String)</li>
-  <li><strong><em><code>message</code></em></strong> (String - <em>can be used html</em>)</li>
-  <li><strong><em><code>type</code></em></strong> (String - <em>info, success, error</em>)&gt;</li>
-</ul>
-<h6>example:</h6>
-<pre>
-  <code>
-    const td = { title: &#39;some title&#39;, 
-            message: &#39;some message&#39;, 
-            type: &#39;info&#39; }
-    document.querySelector(&#39;custom-toast&#39;)
-      .setAttribute(&#39;toast-data&#39;, JSON.stringify(td))
-  </code>
-</pre>
-<h5>* Styles can be set by setting attribute
-  <code>toast-style</code></h5>
-<h5>with following properties:</h5>
-<ul>
-  <li><strong><em><code>position</code></em></strong> (String - <em>center, left-top, right-top, left-bottom,
-      right-bottom</em>)</li>
-  <li><strong><em><code>decoration</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>backdrop</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>colorized</code></em></strong> (Boolean)</li>
-  <li><strong><em><code>color</code></em></strong> (String - <em>any color</em>)</li>
-  <li><strong><em><code>font</code></em></strong> (String - <em>any font-family</em>)</span></li>
-</ul>
-<h6>example:</h6>
-<pre>
-  <code>
-    const ts = { position: &#39;center&#39;, 
-            decoration: false, 
-            colorized: false, 
-            backdrop: false, 
-            color: &quot;#ffffff&quot;, 
-            font: &quot;&#39;Open Sans&#39;, sans-serif&quot; }
-  </code>
-  <code>
-    document.querySelector(&#39;custom-toast&#39;)
-        .setAttribute(&#39;toast-style&#39;, JSON.stringify(ts))
-  </code>
-</pre>
-<style>
-  h3, h4, h5, h6, p, pre, code, ul {
-    margin: 0;
-  }
-</style>`,
-  type: 'info',
+  title: "set custom title",
+  message: `message`,
+  type: "info",
 });
 const applyData = computed(() => {
   if (props.toastData)
@@ -277,38 +204,25 @@ const applyData = computed(() => {
   attrs && setAttrs(defaultData.value);
   return defaultData.value;
 });
-
 // setting type of the toast
 let typeColor = ref(null);
 let types = [
-  { type: 'error', val: 'rgb(195, 27, 25)' },
-  { type: 'info', val: 'rgb(13, 43, 237)' },
-  { type: 'success', val: 'rgb(110, 181, 49)' },
+  { type: "error", val: "rgb(195, 27, 25)" },
+  { type: "info", val: "rgb(13, 43, 237)" },
+  { type: "success", val: "rgb(110, 181, 49)" },
 ];
 const msgType = computed(() => {
   const toastType = types.find((t) => t.type === applyData.value.type);
   typeColor.value = toastType.val;
   return toastType.type;
-  // switch (applyData.value.type) {
-  //   case "error":
-  //     typeColor.value = "rgb(195, 27, 25)";
-  //     break;
-  //   case "info":
-  //     typeColor.value = "rgb(13, 43, 237)";
-  //     break;
-  //   default:
-  //     typeColor.value = "rgb(110, 181, 49)";
-  // }
-  // return applyData.value.type;
 });
-
 // setting up default styles & applying them with prop or style attributes
 const defaultStyle = ref({
-  position: 'center',
+  position: "center",
   decoration: false,
   colorized: false,
-  backdrop: false,
-  color: '#ffb700',
+  backdrop: true,
+  color: "#ffb700",
   font: "'Open Sans', sans-serif",
 });
 const applyStyle = computed(() => {
@@ -320,25 +234,23 @@ const applyStyle = computed(() => {
   attrs && setAttrs(defaultStyle.value);
   return defaultStyle.value;
 });
-
 // setting toast state
 const active = ref(false);
 watch(
   () => props.isActive,
   (newValue, oldValue) => {
     // console.log("Watch props.selected function called with args:", newValue, oldValue);
-    active.value = newValue === 'true';
+    active.value = newValue === "true";
   }
 );
-
 // creating & emitting events
-const emit = defineEmits(['close-toast']);
+const emit = defineEmits(["close-toast"]);
 const toastWrapper = ref(null);
 const hideToast = () => {
   if (!isFixed.value) {
     active.value = false;
     toastWrapper.value.dispatchEvent(
-      new CustomEvent('close-toast', {
+      new CustomEvent("close-toast", {
         bubbles: true,
         composed: true,
       })
@@ -371,7 +283,7 @@ const hideToast = () => {
   right: 0;
   bottom: 0;
   background: transparent;
-  content: '';
+  content: "";
   transition: all 5s;
   opacity: 1;
 }
@@ -420,6 +332,9 @@ const hideToast = () => {
   column-gap: 0.5rem;
   color: v-bind(typeColor);
 }
+#toast-title svg {
+  vertical-align: middle;
+}
 .toast__close {
   color: v-bind(typeColor);
   cursor: pointer;
@@ -435,6 +350,28 @@ const hideToast = () => {
   text-align: left;
   padding-top: 2em;
   word-break: break-all;
+}
+.btn {
+  /* background-color: transparent; */
+  background-color: v-bind(typeColor);
+  /* color: v-bind(typeColor); */
+  color: #ffffff;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: .2rem;
+  border: 2px solid v-bind(typeColor);
+  cursor: pointer;
+  margin-top: 1rem;
+  float: right;
+  box-shadow: 0 0 10px v-bind(typeColor);
+  transition: all .4s ease;
+}
+.btn:hover {
+  /* background-color: v-bind(typeColor); */
+  background-color: transparent;
+  /* color: #ffffff; */
+  color: v-bind(typeColor);
+  box-shadow: none;
 }
 .center {
   justify-content: center;
