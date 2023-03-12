@@ -167,8 +167,8 @@ const props = defineProps({
   },
   actionTitle: {
     type: String,
-    default: 'Logout'
-  }
+    default: "Logout",
+  },
 });
 //
 const isFixed = computed(() => {
@@ -206,15 +206,14 @@ const applyData = computed(() => {
 });
 // setting type of the toast
 let typeColor = ref(null);
-let types = [
-  { type: "error", val: "rgb(195, 27, 25)" },
-  { type: "info", val: "rgb(13, 43, 237)" },
-  { type: "success", val: "rgb(110, 181, 49)" },
-];
+let types = new Map([
+  ["error", "rgb(195, 27, 25)"],
+  ["info", "rgb(13, 43, 237)"],
+  ["success", "rgb(110, 181, 49)"],
+]);
 const msgType = computed(() => {
-  const toastType = types.find((t) => t.type === applyData.value.type);
-  typeColor.value = toastType.val;
-  return toastType.type;
+  typeColor.value = types.get(applyData.value.type);
+  return applyData.value.type;
 });
 // setting up default styles & applying them with prop or style attributes
 const defaultStyle = ref({
@@ -238,8 +237,7 @@ const applyStyle = computed(() => {
 const active = ref(false);
 watch(
   () => props.isActive,
-  (newValue, oldValue) => {
-    // console.log("Watch props.selected function called with args:", newValue, oldValue);
+  (newValue) => {
     active.value = newValue === "true";
   }
 );
@@ -352,25 +350,25 @@ const hideToast = () => {
   word-break: break-all;
 }
 .btn {
-  /* background-color: transparent; */
-  background-color: v-bind(typeColor);
-  /* color: v-bind(typeColor); */
-  color: #ffffff;
+  background-color: transparent;
+  /* background-color: v-bind(typeColor); */
+  color: v-bind(typeColor);
+  /* color: #ffffff; */
   font-weight: 600;
   padding: 1rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   border: 2px solid v-bind(typeColor);
   cursor: pointer;
   margin-top: 1rem;
   float: right;
-  box-shadow: 0 0 10px v-bind(typeColor);
-  transition: all .4s ease;
+  box-shadow: 0 0 7px v-bind(typeColor);
+  transition: all 0.4s ease;
 }
 .btn:hover {
-  /* background-color: v-bind(typeColor); */
-  background-color: transparent;
-  /* color: #ffffff; */
-  color: v-bind(typeColor);
+  background-color: v-bind(typeColor);
+  /* background-color: transparent; */
+  color: #ffffff;
+  /* color: v-bind(typeColor); */
   box-shadow: none;
 }
 .center {
