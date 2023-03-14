@@ -127,7 +127,7 @@
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <div v-if="isFixed" class="">
-          <p>{{ actionTitle }}</p>
+          <p>{{ actionTitle.replaceAll('"', '') }}</p>
           <a :href="handleAction" class="btn">Logout</a>
         </div>
         <slot name="additionalData" />
@@ -167,7 +167,7 @@ const props = defineProps({
   },
   actionTitle: {
     type: String,
-    default: "Logout",
+    default: "",
   },
 });
 // redirect action 
@@ -175,8 +175,7 @@ const isFixed = computed(() => {
   return props.fixed === "true";
 });
 const handleAction = computed(() => {
-  const url = props.actionUrl.split(';')[0]
-  return url.split('"')[1]
+  return props.actionUrl.split(';')[0].split('"')[1]
 });
 // setting attributes
 const attrs = useAttrs();
@@ -363,6 +362,7 @@ const hideToast = () => {
   margin-top: 1rem;
   float: right;
   box-shadow: 0 0 7px v-bind(typeColor);
+  text-decoration: none;
   transition: all 0.4s ease;
 }
 .btn:hover {
