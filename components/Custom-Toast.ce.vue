@@ -127,7 +127,8 @@
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <div v-if="isFixed" class="">
-          <button @click="handleAction" class="btn">{{ actionTitle }}</button>
+          <p>{{ actionTitle }}</p>
+          <a :href="handleAction" class="btn">Logout</a>
         </div>
         <slot name="additionalData" />
       </div>
@@ -143,7 +144,6 @@ export default{
 </script> -->
 <script setup>
 import { ref, computed, watch, useAttrs } from "vue";
-import { useFetch } from "../composables/useFetch";
 
 // setting props
 const props = defineProps({
@@ -170,13 +170,14 @@ const props = defineProps({
     default: "Logout",
   },
 });
-//
+// redirect action 
 const isFixed = computed(() => {
   return props.fixed === "true";
 });
-const handleAction = async () => {
-  const islogout = await useFetch(props.actionUrl, "POST");
-};
+const handleAction = computed(() => {
+  const url = props.actionUrl.split(';')[0]
+  return url.split('"')[1]
+});
 // setting attributes
 const attrs = useAttrs();
 const booleans = ["decoration", "colorized", "backdrop"];
