@@ -92,7 +92,7 @@
  - ***`color`*** (String - *any color*)
  - ***`font`*** (String - *any font-family*)
 
-### - ***passing styles example:***
+#### - ***passing styles example:***
 ```js
   const ts = { position: 'center',
               decoration: false,

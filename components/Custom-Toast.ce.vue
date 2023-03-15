@@ -127,8 +127,10 @@
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <div v-if="isFixed" class="">
-          <p>{{ actionTitle.replaceAll('"', '') }}</p>
-          <a :href="handleAction" class="btn">{{ actionBtn.replaceAll('"', '') }}</a>
+          <p>{{ actionTitle.replaceAll('"', "") }}</p>
+          <a :href="handleAction" class="btn">{{
+            actionBtn.replaceAll('"', "")
+          }}</a>
         </div>
         <slot name="additionalData" />
       </div>
@@ -140,7 +142,6 @@
 export default{
   inheritAttrs: false
 }
-
 </script> -->
 <script setup>
 import { ref, computed, watch, useAttrs } from "vue";
@@ -174,12 +175,12 @@ const props = defineProps({
     default: "",
   },
 });
-// redirect action 
+// redirect action
 const isFixed = computed(() => {
   return props.fixed === "true";
 });
 const handleAction = computed(() => {
-  return props.actionUrl.split(';')[0].split('"')[1]
+  return props.actionUrl.split(";")[0].split('"')[1];
 });
 // setting attributes
 const attrs = useAttrs();
@@ -245,7 +246,7 @@ watch(
     active.value = newValue === "true";
   }
 );
-// creating & emitting events
+// creating & emitting event
 const emit = defineEmits(["close-toast"]);
 const toastWrapper = ref(null);
 const hideToast = () => {
