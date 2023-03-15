@@ -1,14 +1,14 @@
 {
-  "name": "ebc-web-component",
-  "version": "0.2.2",
+  "name": "toast-web-component",
+  "version": "0.4.5",
   "author": "Nikola Pavicevic <nijepa@gmail.com>",
-  "description": "Vue3 web-component for account details - ebc",
+  "description": "Vue3 web-component toast with Vite",
   "keywords": [
     "Vue3",
     "web-component",
     "vite"
   ],
-  "repository": "github:https://github.com/nijepa/vue3-web-components-ebc",
+  "repository": "github:https://github.com/nijepa/vue3-web-components",
   "private": true,
   "scripts": {
     "dev": "vite",

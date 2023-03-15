@@ -128,7 +128,7 @@
         </div>
         <div v-if="isFixed" class="">
           <p>{{ actionTitle.replaceAll('"', '') }}</p>
-          <a :href="handleAction" class="btn">Logout</a>
+          <a :href="handleAction" class="btn">{{ actionBtn.replaceAll('"', '') }}</a>
         </div>
         <slot name="additionalData" />
       </div>
@@ -166,6 +166,10 @@ const props = defineProps({
     default: "",
   },
   actionTitle: {
+    type: String,
+    default: "",
+  },
+  actionBtn: {
     type: String,
     default: "",
   },
