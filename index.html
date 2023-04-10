@@ -16,19 +16,48 @@
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      * {
+        font-family: 'Open Sans', sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      button {
+        padding: 1rem;
+        border: 1px solid #000;
+        border-radius: .3rem;
+        background-color: transparent;
+        color: #000;
+        font-variant: small-caps;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        -webkit-box-shadow: 0px 0px 15px 5px #000000;
+        box-shadow: 0px 0px 5px 1px #000000;
+        transition: all .5s ease;
+      }
+      button:hover {
+        background-color: #000;
+        color: #fff;
+        box-shadow: none;
+      }
+    </style>
   </head>
-
   <body>
-    <button onclick="showToast()">toast</button>
+    <h3>Vue Web Components!</h3>
+    <h1>Toast</h1>
+    <button onclick="showToast()">toggle</button>
     <div id="app">
-      <h1>Vue Web Components!</h1>
       <custom-toast >
-        <!-- <span slot="additionalData">
+        <span slot="additionalData">
           <div>
             <h3>additional info in slot</h3>
             <i>tandar mandara broc</i>
           </div>
-        </span> -->
+        </span>
       </custom-toast>
     </div>
     <script type="module" src="/main.js"></script>
@@ -56,12 +85,8 @@
       };
       //toast.setAttribute("toast-style", JSON.stringify(ts));
       //toast.setAttribute("position", 'center')
-
       //setAttributes(toast, ts)
-      toast.setAttribute("fixed", JSON.stringify(true))
-      toast.setAttribute("action-url", JSON.stringify('aaa'))
-      toast.setAttribute("action-title", JSON.stringify('bbb'))
-      toast.setAttribute("action-btn", JSON.stringify('ccc'))
+      toast.setAttribute("fixed", 'true')
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };
