@@ -58,7 +58,10 @@
       //toast.setAttribute("position", 'center')
 
       //setAttributes(toast, ts)
-      toast.setAttribute("fixed", 'true')
+      toast.setAttribute("fixed", JSON.stringify(true))
+      toast.setAttribute("action-url", JSON.stringify('aaa'))
+      toast.setAttribute("action-title", JSON.stringify('bbb'))
+      toast.setAttribute("action-btn", JSON.stringify('ccc'))
       const showToast = () => {
         toast.setAttribute('is-active', 'true');
       };
