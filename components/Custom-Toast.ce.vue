@@ -127,10 +127,8 @@
           <div id="toast-msg" v-html="applyData.message"></div>
         </div>
         <div v-if="isFixed" class="">
-          <p>{{ actionTitle.replaceAll('"', "") }}</p>
-          <a :href="handleAction" class="btn">{{
-            actionBtn.replaceAll('"', "")
-          }}</a>
+          <p>{{ JSON.parse(actionTitle) }}</p>
+          <a :href="handleAction" class="btn">{{ JSON.parse(actionBtn) }}</a>
         </div>
         <slot name="additionalData" />
       </div>
@@ -144,13 +142,13 @@ export default{
 }
 </script> -->
 <script setup>
-import { ref, computed, watch, useAttrs } from "vue";
+import { ref, computed, watch, useAttrs } from 'vue';
 
 // setting props
 const props = defineProps({
   isActive: {
     type: String,
-    default: "false",
+    default: 'false',
   },
   toastData: {
     type: String,
@@ -160,31 +158,31 @@ const props = defineProps({
   },
   fixed: {
     type: String,
-    default: "false",
+    default: 'false',
   },
   actionUrl: {
     type: String,
-    default: "",
+    default: '',
   },
   actionTitle: {
     type: String,
-    default: "",
+    default: '',
   },
   actionBtn: {
     type: String,
-    default: "",
+    default: '',
   },
 });
 // redirect action
 const isFixed = computed(() => {
-  return props.fixed === "true";
+  return props.fixed === 'true';
 });
 const handleAction = computed(() => {
-  return props.actionUrl.split(";")[0].split('"')[1];
+  return props.actionUrl.split(';')[0].split('"')[1];
 });
 // setting attributes
 const attrs = useAttrs();
-const booleans = ["decoration", "colorized", "backdrop"];
+const booleans = ['decoration', 'colorized', 'backdrop'];
 const setAttrs = (prop) => {
   Object.keys(attrs).forEach((a) => {
     if (Object.keys(prop).includes(a)) {
@@ -196,9 +194,9 @@ const setAttrs = (prop) => {
 };
 // setting up default data & applying them with prop or data attributes
 const defaultData = ref({
-  title: "set custom title",
+  title: 'set custom title',
   message: `message`,
-  type: "info",
+  type: 'info',
 });
 const applyData = computed(() => {
   if (props.toastData)
@@ -212,9 +210,9 @@ const applyData = computed(() => {
 // setting type of the toast
 let typeColor = ref(null);
 let types = new Map([
-  ["error", "rgb(195, 27, 25)"],
-  ["info", "rgb(13, 43, 237)"],
-  ["success", "rgb(110, 181, 49)"],
+  ['error', 'rgb(195, 27, 25)'],
+  ['info', 'rgb(13, 43, 237)'],
+  ['success', 'rgb(110, 181, 49)'],
 ]);
 const msgType = computed(() => {
   typeColor.value = types.get(applyData.value.type);
@@ -222,11 +220,11 @@ const msgType = computed(() => {
 });
 // setting up default styles & applying them with prop or style attributes
 const defaultStyle = ref({
-  position: "center",
+  position: 'center',
   decoration: false,
   colorized: false,
   backdrop: true,
-  color: "#ffb700",
+  color: '#ffb700',
   font: "'Open Sans', sans-serif",
 });
 const applyStyle = computed(() => {
@@ -243,17 +241,17 @@ const active = ref(false);
 watch(
   () => props.isActive,
   (newValue) => {
-    active.value = newValue === "true";
+    active.value = newValue === 'true';
   }
 );
 // creating & emitting event
-const emit = defineEmits(["close-toast"]);
+const emit = defineEmits(['close-toast']);
 const toastWrapper = ref(null);
 const hideToast = () => {
   if (!isFixed.value) {
     active.value = false;
     toastWrapper.value.dispatchEvent(
-      new CustomEvent("close-toast", {
+      new CustomEvent('close-toast', {
         bubbles: true,
         composed: true,
       })
@@ -286,7 +284,7 @@ const hideToast = () => {
   right: 0;
   bottom: 0;
   background: transparent;
-  content: "";
+  content: '';
   transition: all 5s;
   opacity: 1;
 }
