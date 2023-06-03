@@ -146,10 +146,10 @@ import { ref, computed, watch, useAttrs } from 'vue';
 
 // setting props
 const props = defineProps({
-  isActive: {
-    type: String,
-    default: 'false',
-  },
+  // isActive: {
+  //   type: String,
+  //   default: 'false',
+  // },
   toastData: {
     type: String,
   },
@@ -238,12 +238,16 @@ const applyStyle = computed(() => {
 });
 // setting toast state
 const active = ref(false);
-watch(
-  () => props.isActive,
-  (newValue) => {
-    active.value = newValue === 'true';
-  }
-);
+// watch(
+//   () => props.isActive,
+//   (newValue) => {
+//     active.value = newValue === 'true';
+//   }
+// );
+const toggleState = () => {
+  active.value = !active.value
+}
+defineExpose({ toggleState })
 // creating & emitting event
 const emit = defineEmits(['close-toast']);
 const toastWrapper = ref(null);
